@@ -1,0 +1,21 @@
+const mongoose = require('mongoose')
+const movieSchema = require('./movie')
+
+const Schema = mongoose.Schema
+
+const monthSchema = new Schema(
+    {
+        month: {
+            type: String,
+            required: true,
+        },
+        movies: [movieSchema]
+    },
+    {
+        timestamps: true,
+    }
+)
+
+const Month = mongoose.model('Month', monthSchema)
+
+module.exports = Month
