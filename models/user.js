@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema(
 			required: true,
 		},
         // Each user has 12 months
-        months: [monthSchema],
+        months: [{type: mongoose.Schema.Types.ObjectId, ref: 'Month'}],
 		token: String,
 	},
 	{
