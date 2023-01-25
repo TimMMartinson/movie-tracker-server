@@ -1,0 +1,29 @@
+{
+  "name": "movie-tracker-server",
+  "version": "1.0.0",
+  "description": "---\r ![](./wireframe/Movie%20Tracker%20Wireframe%20(1).jpg)",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimMMartinson/movie-tracker-server.git"
+  },
+  "author": "Tim Martinson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TimMMartinson/movie-tracker-server/issues"
+  },
+  "homepage": "https://github.com/TimMMartinson/movie-tracker-server#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.8.4",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1"
+  }
+}
