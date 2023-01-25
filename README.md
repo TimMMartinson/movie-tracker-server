@@ -21,6 +21,10 @@
 - As a user, I want to be able to add and edit comments/reviews on movies.
 - As a user, I want to track if I have watched a movie on my list yet, and update it once I have.
 - As a user, I want to be able to remove movies from my database, because I may decide not to watch a movie on the list after all, or I may want to add it to a different month.
+- As a user, I want to be able to add movies to my database.
+- As a user, I want to be able to view all movies in my database.
+- As a user, I want to be able to view a specific movie in my database.
+- As a user, I want to be able to update movies in my database.
 - As a user, I want a clean interface because I want to be able to see what I am doing.
 ---
 #### Version 2:
