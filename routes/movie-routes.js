@@ -55,8 +55,8 @@ router.post('/months/:id/movies', auth.requireToken, (req, res, next) => {
 })
 
 // UPDATE (PATCH)
-router.patch('/months/:id/movies/:movieId', (req, res, next) => {
-    Movie.findOneAndUpdate({ _id: req.params.movieId, month: req.params.id, user: req.user.id }, req.body, { new: true })
+router.patch('/months/:monthId/movies/:movieId', (req, res, next) => {
+    Movie.findOneAndUpdate({ _id: req.params.movieId, month: req.params.monthId }, req.body, { new: true })
     .then((movie) => {
         if (!movie) {
             handle404()
@@ -70,7 +70,7 @@ router.patch('/months/:id/movies/:movieId', (req, res, next) => {
 
 // REMOVE (DELETE)
 router.delete('/months/:id/movies/:movieId', (req, res, next) => {
-    Movie.findOneAndRemove({ _id: req.params.movieId, month: req.params.id, user: req.user.id })
+    Movie.findOneAndRemove({ _id: req.params.movieId, month: req.params.id })
         .then(() => {
             res.status(204).end()
         })

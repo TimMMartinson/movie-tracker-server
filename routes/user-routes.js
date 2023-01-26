@@ -54,6 +54,7 @@ router.post('/sign-in', (req, res, next) => {
 // Get All Months for User (GET)
 router.get('/months', auth.requireToken, (req, res, next) => {
     Month.find({ user: req.user.id })
+        .populate('movies')
         .then((months) => {
             res.json({ months })
         })

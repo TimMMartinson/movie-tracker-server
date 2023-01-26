@@ -27,7 +27,8 @@ router.post('/:month/movies', (req, res, next) => {
 
 // SHOW (GET)
 router.get('/months/:id', (req, res, next) => {
-    Month.findById(req.params.id).populate('movies')
+    Month.findById(req.params.id)
+    .populate('movies')
     .then((month) => {
         if (!month) {
             handle404()
