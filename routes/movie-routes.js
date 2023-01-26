@@ -33,11 +33,7 @@ router.get('/months/:id/movies/:movieId', auth.requireToken, (req, res, next) =>
 
 // CREATE (POST)
 router.post('/months/:id/movies', auth.requireToken, (req, res, next) => {
-    const newMovie = new Movie({
-        ...req.body,
-        month: req.params.id,
-        user: req.user.id
-    })
+    const newMovie = new Movie({ ...req.body, month: req.params.id })
     newMovie.save()
         .then((movie) => {
             res.status(201).json({ movie })

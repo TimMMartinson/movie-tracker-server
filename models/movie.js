@@ -14,6 +14,11 @@ const movieSchema = new Schema(
         },
         comments: {
             type: String,
+        },
+        month: {
+            type: Schema.Types.ObjectId,
+            ref: 'Month',
+            required: true
         }
     },
     {
