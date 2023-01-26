@@ -2,12 +2,13 @@ const express = require('express')
 const { handle404 } = require('../lib/custom-errors')
 
 const Movie = require('../models/movie')
+const auth = require('../config/auth')
 
 const router = express.Router()
 
 // INDEX (GET)
-router.get('/months/movies', (req, res, next) => {
-    Movie.find({})
+router.get('/months/:id/movies', auth.requireToken, (req, res, next) => {
+    Movie.find({ month: req.params.id, user: req.user.id })
         .then((movies) => {
             res.json({ movies })
         })
@@ -17,8 +18,8 @@ router.get('/months/movies', (req, res, next) => {
 })
 
 // SHOW ONE (GET)
-router.get('/months/movies/:id', (req, res, next) => {
-    Movie.findById(req.params.id)
+router.get('/months/:id/movies/:movieId', auth.requireToken, (req, res, next) => {
+    Movie.findOne({ _id: req.params.movieId, month: req.params.id, user: req.user.id })
         .then((movie) => {
             if (!movie) {
                 handle404()
@@ -31,8 +32,12 @@ router.get('/months/movies/:id', (req, res, next) => {
 })
 
 // CREATE (POST)
-router.post('/months/movies', (req, res, next) => {
-    const newMovie = new Movie(req.body)
+router.post('/months/:id/movies', auth.requireToken, (req, res, next) => {
+    const newMovie = new Movie({
+        ...req.body,
+        month: req.params.id,
+        user: req.user.id
+    })
     newMovie.save()
         .then((movie) => {
             res.status(201).json({ movie })
@@ -43,22 +48,22 @@ router.post('/months/movies', (req, res, next) => {
 })
 
 // UPDATE (PATCH)
-router.patch('/months/movies/:id', (req, res, next) => {
-    Movie.findByIdAndUpdate(req.params.id, req.body, { new: true })
-        .then((movie) => {
-            if (!movie) {
-                handle404()
-            }
-            res.json({ movie })
-        })
-        .catch((err) => {
-            next(err)
-        })
+router.patch('/months/:id/movies/:movieId', (req, res, next) => {
+    Movie.findOneAndUpdate({ _id: req.params.movieId, month: req.params.id, user: req.user.id }, req.body, { new: true })
+    .then((movie) => {
+        if (!movie) {
+            handle404()
+        }
+        res.json({ movie })
+    })
+    .catch((err) => {
+        next(err)
+    })
 })
 
 // REMOVE (DELETE)
-router.delete('/months/movies/:id', (req, res, next) => {
-    Movie.findByIdAndRemove(req.params.id)
+router.delete('/months/:id/movies/:movieId', (req, res, next) => {
+    Movie.findOneAndRemove({ _id: req.params.movieId, month: req.params.id, user: req.user.id })
         .then(() => {
             res.status(204).end()
         })
