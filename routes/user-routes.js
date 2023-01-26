@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const Month = require('../models/month')
 const Movie = require('../models/movie')
+const auth = require('../config/auth')
 const { createUserToken } = require('../config/auth')
 
 const router = express.Router()
@@ -51,7 +52,7 @@ router.post('/sign-in', (req, res, next) => {
 })
 
 // Get All Months for User (GET)
-router.get('/months', authenticate, (req, res, next) => {
+router.get('/months', auth.requireToken, (req, res, next) => {
     Month.find({ user: req.user.id })
         .then((months) => {
             res.json({ months })
@@ -62,7 +63,7 @@ router.get('/months', authenticate, (req, res, next) => {
 })
 
 // Get All Movies for Month (GET)
-router.get('/months/:id/movies', authenticate, (req, res, next) => {
+router.get('/months/:id/movies', auth.requireToken, (req, res, next) => {
     Movie.find({ month: req.params.id, user: req.user.id })
         .then((movies) => {
             if (!movies) {
@@ -74,23 +75,5 @@ router.get('/months/:id/movies', authenticate, (req, res, next) => {
             next(err)
         })
 })
-
-// Middleware function to authenticate user
-function authenticate(req, res, next) {
-    const token = req.headers.authorization
-
-    if (!token) {
-        return res.status(401).json({ message: 'No token provided' })
-    }
-
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) {
-            return res.status(401).json({ message: 'Invalid token' })
-        }
-
-        req.user = decoded
-        next()
-    })
-}
 
 module.exports = router
