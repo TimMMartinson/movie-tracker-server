@@ -2,6 +2,7 @@ const express = require('express')
 const { handle404 } = require('../lib/custom-errors')
 
 const Movie = require('../models/movie')
+const Month = require('../models/month')
 const auth = require('../config/auth')
 
 const router = express.Router()
@@ -35,12 +36,22 @@ router.get('/months/:id/movies/:movieId', auth.requireToken, (req, res, next) =>
 router.post('/months/:id/movies', auth.requireToken, (req, res, next) => {
     const newMovie = new Movie({ ...req.body, month: req.params.id })
     newMovie.save()
-        .then((movie) => {
-            res.status(201).json({ movie })
-        })
-        .catch((err) => {
-            next(err)
-        })
+    .then((movie) => {
+        Month.findById(req.params.id)
+            .then((month) => {
+                month.movies.push(movie._id)
+                return month.save()
+            })
+            .then(() => {
+                res.status(201).json({ movie })
+            })
+            .catch((err) => {
+                next(err)
+            })
+    })
+    .catch((err) => {
+        next(err)
+    })
 })
 
 // UPDATE (PATCH)

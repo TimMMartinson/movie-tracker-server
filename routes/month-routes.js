@@ -26,17 +26,16 @@ router.post('/:month/movies', (req, res, next) => {
 })
 
 // SHOW (GET)
-router.get('/:month/movies', (req, res, next) => {
-    Month.findOne({ month: req.params.month })
-        .then((month) => {
-            if (!month) {
-                handle404()
-            }
-            res.json({ month })
-        })
-        .catch((err) => {
-            next(err)
-        })
+router.get('/months/:id', (req, res, next) => {
+    Month.findById(req.params.id).populate('movies')
+    .then((month) => {
+        if (!month) {
+            handle404()
+        }
+        res.json({ month })
+    })
+    .catch((err) => {
+        next(err)
+    })
 })
-
 module.exports = router
