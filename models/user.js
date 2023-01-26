@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Month = require('./month')
+const bcrypt = require('bcrypt')
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
@@ -39,5 +40,9 @@ userSchema.pre('save', function (next) {
     }
     next()
 })
+
+userSchema.methods.validatePassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
+}
 
 module.exports = mongoose.model('User', userSchema)
