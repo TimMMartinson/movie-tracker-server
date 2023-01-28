@@ -1,5 +1,6 @@
 const express = require('express')
 const { handle404 } = require('../lib/custom-errors')
+const auth = require('../config/auth')
 
 const Month = require('../models/month')
 const Movie = require('../models/movie')
@@ -26,17 +27,14 @@ router.post('/:month/movies', (req, res, next) => {
 })
 
 // SHOW (GET)
-router.get('/months/:id', (req, res, next) => {
-    Month.findById(req.params.id)
-    .populate('movies')
-    .then((month) => {
-        if (!month) {
-            handle404()
-        }
-        res.json({ month })
-    })
-    .catch((err) => {
-        next(err)
-    })
+router.get('/months/:id', auth.requireToken, (req, res, next) => {
+    Month.find({ _id: req.params.id, user: req.user.id })
+        .populate('movies')
+        .then((month) => {
+            res.json({ month })
+        })
+        .catch((err) => {
+            next(err)
+        })
 })
 module.exports = router
