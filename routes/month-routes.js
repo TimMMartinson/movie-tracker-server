@@ -27,7 +27,7 @@ router.post('/:month/movies', (req, res, next) => {
 })
 
 // SHOW (GET)
-router.get('/months/:id', auth.requireToken, (req, res, next) => {
+router.get('/months/:monthIndex', auth.requireToken, (req, res, next) => {
     Month.find({ _id: req.params.id, user: req.user.id })
         .populate('movies')
         .then((month) => {
