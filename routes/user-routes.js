@@ -44,19 +44,30 @@ router.post('/sign-in', (req, res, next) => {
         }
 
         const token = createUserToken(req, user)
-        res.json({ token })
+        res.status(200).json({ token })
     })
     .catch((err) => {
         next(err)
     })
 })
 
+// Get Current User (GET)
+router.get('/user', auth.requireToken, (req, res) => {
+    User.findById(req.user.id)
+        .populate('months')
+        .then(user => {
+            let month = user.months.find(month => month._id === req.query.month)
+            res.send({month: month, monthId: month._id})
+        })
+        .catch(err => res.send(err))
+})
+
 // Get All Months for User (GET)
-router.get('/months', auth.requireToken, (req, res, next) => {
-    Month.find({ user: req.user.id })
-        .populate('movies')
-        .then((months) => {
-            res.json({ months })
+router.get('/user/:id/months', auth.requireToken, (req, res, next) => {
+    User.findById(req.user.id)
+        .populate('months')
+        .then((user) => {
+            res.json({ months: user.months })
         })
         .catch((err) => {
             next(err)

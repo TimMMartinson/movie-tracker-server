@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const movieSchema = require('./movie')
 
 const Schema = mongoose.Schema
 
