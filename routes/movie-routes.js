@@ -8,36 +8,39 @@ const auth = require('../config/auth')
 const router = express.Router()
 
 // INDEX (GET)
-router.get('/months/:id/movies', auth.requireToken, (req, res, next) => {
-    Movie.find({ month: req.params.id, user: req.user.id })
-        .then((movies) => {
-            res.json({ movies })
-        })
-        .catch((err) => {
-            next(err)
-        })
-})
+// router.get('/movies', auth.requireToken, (req, res, next) => {
+//     Month.find({ month: req.params.monthId, user: req.user.id })
+//         .then((movies) => {
+//             if (!movies) {
+//                 handle404()
+//             }
+//             res.json({ movies })
+//         })
+//         .catch((err) => {
+//             next(err)
+//         })
+// })
 
-// SHOW ONE (GET)
-router.get('/months/:id/movies/:movieId', auth.requireToken, (req, res, next) => {
-    Movie.findOne({ _id: req.params.movieId, month: req.params.id, user: req.user.id })
-        .then((movie) => {
-            if (!movie) {
-                handle404()
-            }
-            res.json({ movie })
-        })
-        .catch((err) => {
-            next(err)
-        })
-})
+// // SHOW ONE (GET)
+// router.get('/movies/:movieId', auth.requireToken, (req, res, next) => {
+//     Movie.findOne({ _id: req.params.movieId, month: req.params.monthId, user: req.user.id })
+//         .then((movie) => {
+//             if (!movie) {
+//                 handle404()
+//             }
+//             res.json({ movie })
+//         })
+//         .catch((err) => {
+//             next(err)
+//         })
+// })
 
 // CREATE (POST)
-router.post('/months/:id/movies', auth.requireToken, (req, res, next) => {
-    const newMovie = new Movie({ ...req.body, month: req.params.id })
+router.post('/movies', auth.requireToken, (req, res, next) => {
+    const newMovie = new Movie({ ...req.body, month: req.body.monthId })
     newMovie.save()
     .then((movie) => {
-        Month.findById(req.params.id)
+        Month.findById(req.body.monthId)
             .then((month) => {
                 month.movies.push(movie._id)
                 return month.save()
@@ -55,7 +58,7 @@ router.post('/months/:id/movies', auth.requireToken, (req, res, next) => {
 })
 
 // UPDATE (PATCH)
-router.patch('/months/:monthId/movies/:movieId', (req, res, next) => {
+router.patch('/movies/:movieId', (req, res, next) => {
     Movie.findOneAndUpdate({ _id: req.params.movieId, month: req.params.monthId }, req.body, { new: true })
     .then((movie) => {
         if (!movie) {
@@ -69,8 +72,8 @@ router.patch('/months/:monthId/movies/:movieId', (req, res, next) => {
 })
 
 // REMOVE (DELETE)
-router.delete('/months/:id/movies/:movieId', (req, res, next) => {
-    Movie.findOneAndRemove({ _id: req.params.movieId, month: req.params.id })
+router.delete('/movies/:movieId', (req, res, next) => {
+    Movie.findOneAndRemove({ _id: req.params.movieId, month: req.params.monthId })
         .then(() => {
             res.status(204).end()
         })

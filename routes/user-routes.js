@@ -62,30 +62,6 @@ router.get('/user', auth.requireToken, (req, res) => {
         .catch(err => res.send(err))
 })
 
-// Get All Months for User (GET)
-router.get('/user/:id/months', auth.requireToken, (req, res, next) => {
-    User.findById(req.user.id)
-        .populate('months')
-        .then((user) => {
-            res.json({ months: user.months })
-        })
-        .catch((err) => {
-            next(err)
-        })
-})
 
-// Get All Movies for Month (GET)
-router.get('/months/:id/movies', auth.requireToken, (req, res, next) => {
-    Movie.find({ month: req.params.id, user: req.user.id })
-        .then((movies) => {
-            if (!movies) {
-                handle404()
-            }
-            res.json({ movies })
-        })
-        .catch((err) => {
-            next(err)
-        })
-})
 
 module.exports = router

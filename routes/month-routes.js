@@ -4,22 +4,15 @@ const auth = require('../config/auth')
 
 const Month = require('../models/month')
 const Movie = require('../models/movie')
-
+const User = require('../models/user')
 const router = express.Router()
 
-// CREATE (POST)
-router.post('/:month/movies', (req, res, next) => {
-    Month.findOne({ month: req.params.month })
-        .then((month) => {
-            if (!month) {
-                handle404()
-            }
-            const newMovie = new Movie(req.body)
-            month.movies.push(newMovie)
-            return month.save()
-        })
-        .then((updatedMonth) => {
-            res.status(201).json({ updatedMonth })
+// INDEX (GET)
+router.get('/months', auth.requireToken, (req, res, next) => {
+    User.findById(req.user.id)
+        .populate('months')
+        .then((user) => {
+            res.json({ months: user.months })
         })
         .catch((err) => {
             next(err)
@@ -27,7 +20,7 @@ router.post('/:month/movies', (req, res, next) => {
 })
 
 // SHOW (GET)
-router.get('/months/:monthIndex', auth.requireToken, (req, res, next) => {
+router.get('/months/:monthId', auth.requireToken, (req, res, next) => {
     Month.find({ _id: req.params.id, user: req.user.id })
         .populate('movies')
         .then((month) => {
@@ -36,5 +29,6 @@ router.get('/months/:monthIndex', auth.requireToken, (req, res, next) => {
         .catch((err) => {
             next(err)
         })
+        console.log(month)
 })
 module.exports = router
