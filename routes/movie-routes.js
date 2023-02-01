@@ -21,19 +21,19 @@ router.get('/movies', auth.requireToken, (req, res, next) => {
         })
 })
 
-// // SHOW ONE (GET)
-// router.get('/movies/:movieId', auth.requireToken, (req, res, next) => {
-//     Movie.findOne({ _id: req.params.movieId, month: req.params.monthId, user: req.user.id })
-//         .then((movie) => {
-//             if (!movie) {
-//                 handle404()
-//             }
-//             res.json({ movie })
-//         })
-//         .catch((err) => {
-//             next(err)
-//         })
-// })
+// SHOW ONE (GET)
+router.get('/movies/:movieId', auth.requireToken, (req, res, next) => {
+    Movie.findOne({ _id: req.params.movieId, month: req.params.monthId, user: req.user.id })
+        .then((movie) => {
+            if (!movie) {
+                handle404()
+            }
+            res.json({ movie })
+        })
+        .catch((err) => {
+            next(err)
+        })
+})
 
 // CREATE (POST)
 router.post('/movies', auth.requireToken, (req, res, next) => {
