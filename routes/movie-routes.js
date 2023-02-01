@@ -8,18 +8,18 @@ const auth = require('../config/auth')
 const router = express.Router()
 
 // INDEX (GET)
-// router.get('/movies', auth.requireToken, (req, res, next) => {
-//     Month.find({ month: req.params.monthId, user: req.user.id })
-//         .then((movies) => {
-//             if (!movies) {
-//                 handle404()
-//             }
-//             res.json({ movies })
-//         })
-//         .catch((err) => {
-//             next(err)
-//         })
-// })
+router.get('/movies', auth.requireToken, (req, res, next) => {
+    Month.find({ month: req.params.monthId, user: req.user.id })
+        .then((movies) => {
+            if (!movies) {
+                handle404()
+            }
+            res.json({ movies })
+        })
+        .catch((err) => {
+            next(err)
+        })
+})
 
 // // SHOW ONE (GET)
 // router.get('/movies/:movieId', auth.requireToken, (req, res, next) => {
