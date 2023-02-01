@@ -35,3 +35,14 @@ Each 'Show Movies' button is designed to show the movie items in the month Schem
 | Show        | /movies/:movieId               |GET          |Displays one movie |
 | SignUp      | /sign-up                         |POST         |Creates new login   |
 | SignIn      | /sign-in                         |POST         |Logs user in        |
+---
+### Future Plans:
+---
+#### Version 2:
+- As a user, I want CRUD functionality to be more easily accessible.
+- As a user, I want to log out.
+- As a user, I want a better looking interface.
+- As a user, I want to be able to rename my 'months of the year', because I want to be able to name a theme for the month (e.g "Horror Movie October" or "No Good November").
+---
+#### Version 3:
+- As a user, I want access to a movie api to suggest films to watch, and to add them to my database
