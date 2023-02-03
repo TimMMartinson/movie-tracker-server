@@ -10,7 +10,7 @@ const movieSchema = new Schema(
         },
         watched: {
             type: Boolean,
-            required: true,
+            required: true, // did we consider a default false here ? 
         },
         comments: {
             type: String,
