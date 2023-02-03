@@ -8,7 +8,7 @@ const monthSchema = new Schema(
             type: String,
             required: true,
         },
-        movies: [{type: mongoose.Schema.Types.ObjectId, ref: 'Movie'}]
+        movies: [{type: mongoose.Schema.Types.ObjectId, ref: 'Movie'}] // wish this was opened up like above - just to be consistent with style choices
     },
     {
         timestamps: true,
